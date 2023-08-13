@@ -21,8 +21,10 @@ namespace ACore
 
     }
 
-    void AFileExplore::ExploreFolder(char *folder)
+    std::vector<SExplorerItem> AFileExplore::ExploreFolder(std::string folder)
     {
+        std::vector<SExplorerItem> result = std::vector<SExplorerItem>();
+
         path explorePath(folder);
 
         if(exists(explorePath))
@@ -31,9 +33,16 @@ namespace ACore
             {
                 for(directory_entry& x : directory_iterator(explorePath))
                 {
-                    std::cout << x.path() << std::endl;
+                    SExplorerItem itm;
+                    itm.Name = x.path().filename().string();
+                    itm.Type = is_directory(x.path()) ? ItemType::DIRECTORY : ItemType::FILE;
+                    itm.FullPath = x.path().string();
+                    result.push_back(itm);
                 }
             }
         }
+
+        currentPath = folder;
+        return result;
     }
 }

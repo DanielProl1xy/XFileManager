@@ -2,8 +2,9 @@
 
 CExplorerItem::CExplorerItem(ACore::SExplorerItem meta)
     : QListWidgetItem(meta.Name.c_str())
+    , itemMeta(meta)
 {
-    
+
 }
 
 CExplorerItem::~CExplorerItem()

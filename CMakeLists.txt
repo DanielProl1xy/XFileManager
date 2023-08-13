@@ -13,7 +13,7 @@ set(BOOST_ROOT "C:/Boost")
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-find_package(Boost 1.80.0 COMPONENTS filesystem REQUIRED)
+find_package(Boost 1.80.0 COMPONENTS filesystem thread chrono REQUIRED)
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/sources
@@ -39,4 +39,6 @@ add_executable(app ${all_SRCS})
 target_link_libraries(app PRIVATE 
     Qt${QT_VERSION_MAJOR}::Widgets
     Boost::filesystem
+    Boost::thread
+    Boost::chrono
 )

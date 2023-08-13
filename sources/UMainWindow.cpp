@@ -17,7 +17,10 @@ namespace UI
     {
         setWindowTitle(TITLE);
         initWidgets();
+        initActions();
         qDebug("window created");
+
+        filesExplorer->ExploreFolder();
     }
 
     UMainWindow::~UMainWindow()
@@ -71,6 +74,24 @@ namespace UI
 
     void UMainWindow::initActions()
     {
+        connect(filesExplorer, &CExplorer::UpdateExplorerPath, pathLine, &QLineEdit::setText);
+        connect(pathLine, &QLineEdit::editingFinished, this, &UMainWindow::on_PathLineAccepted);
+        connect(fastFindLine, &QLineEdit::editingFinished, this, &UMainWindow::on_FindLineAccepted);
+        connect(this, &UMainWindow::UserTypedPath, filesExplorer, &CExplorer::on_UserTypedPath);
+    }
+    
+    void UMainWindow::on_PathLineAccepted()
+    {
+        emit UserTypedPath(pathLine->text().toStdString());
+    }
 
+    void UMainWindow::on_FindLineAccepted()
+    {
+        finder = new ACore::ASmartFind();
+        ACore::SFindRequest request;
+        request.RecursionLimit = 10;
+        request.Request = fastFindLine->text().toStdString();
+        request.SearchPath = filesExplorer->GetCurrentPath();
+        finder->SearchFor(request);
     }
 }

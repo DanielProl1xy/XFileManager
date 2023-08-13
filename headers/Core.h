@@ -29,10 +29,39 @@ namespace ACore
         DIRECTORY
     };
 
+    enum class ExploreResult
+    {
+        FAILED,
+        SUCCESS,
+    };
+
     struct SExplorerItem
     {
         ItemType Type;
         std::string Name; 
+        std::string FullPath;
+    };
+
+    enum class FindResult
+    {
+        REQUEST_ACCEPTED,
+        REQUEST_INVALID,
+        FOUND,
+        NOT_FOUND,
+        FINISHED
+    };
+
+    struct SFindRequest
+    {
+        std::string Request;
+        std::string SearchPath;        
+        size_t RecursionLimit;
+    };
+
+    struct SFindResult
+    {
+        ExploreResult Result;
+        SExplorerItem Item;
     };
 }
 QT_END_NAMESPACE

@@ -1,7 +1,5 @@
 #include <QApplication>
 #include <UMainWindow.h>
-#include "Core.h"
-#include "Func/AFileExplore.h"
 
 using namespace UI;
 
