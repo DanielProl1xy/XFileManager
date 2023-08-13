@@ -56,6 +56,11 @@ namespace ACore
         std::string Request;
         std::string SearchPath;        
         size_t RecursionLimit;
+
+        bool operator==(SFindRequest& other)
+        {
+            return other.Request == Request && other.SearchPath == SearchPath;
+        }
     };
 
     struct SFindResult

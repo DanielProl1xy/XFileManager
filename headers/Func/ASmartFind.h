@@ -6,6 +6,8 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/thread.hpp>
 
+#define THREADS_COUNT 4
+
 using namespace boost::filesystem;
 using namespace boost::algorithm;
 
@@ -13,7 +15,7 @@ class ACore::ASmartFind
 {
 
 public:
-    FindResult SearchFor(const SFindRequest request); 
+    FindResult SearchFor(SFindRequest request); 
     FindResult SearchGetNext(SExplorerItem* item);
     void SearchStop();
 private:

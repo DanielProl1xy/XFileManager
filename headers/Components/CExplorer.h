@@ -33,6 +33,7 @@ public:
 public:
     std::string GetCurrentPath() const { return m_explorer.GetCurrentPath(); }
     void ExploreFolder(const std::string folderPath = ROOT_PATH);
+    void AddExplorerItem(ACore::SExplorerItem sItem);
 
 public slots:
     void on_UserTypedPath(const std::string newPath);

@@ -1,4 +1,5 @@
 #include "Components/CExplorer.h"
+#include "CExplorer.h"
 
 namespace UI 
 {
@@ -16,10 +17,18 @@ namespace UI
 
     void CExplorer::ExploreFolder(const std::string folderPath)
     {
+
         if(exploreFolder(folderPath) == ACore::ExploreResult::SUCCESS)
         {
             emit UpdateExplorerPath(folderPath.c_str());
-        }   
+        }  
+         
+    }
+
+    void CExplorer::AddExplorerItem(ACore::SExplorerItem sItem)
+    {
+        CExplorerItem *item = new CExplorerItem(sItem);
+        addItem(item);
     }
 
     void CExplorer::initActions()
@@ -67,8 +76,7 @@ namespace UI
 
         for(ACore::SExplorerItem x : items)
         {
-            CExplorerItem *item = new CExplorerItem(x);
-            addItem(item);
+            AddExplorerItem(x);
         }
         return ACore::ExploreResult::SUCCESS;    
     }

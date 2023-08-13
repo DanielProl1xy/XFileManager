@@ -2,13 +2,14 @@
 #include "ASmartFind.h"
 #include <iostream>
 
-#define THREADS_COUNT 4
-
 namespace ACore
 {
-    FindResult ASmartFind::SearchFor(const SFindRequest request)
+    FindResult ASmartFind::SearchFor(SFindRequest request)
     {
-        finished = false;
+        if(!finished && request == mRequest)
+            return FindResult::REQUEST_ACCEPTED;
+
+
         mRequest = request;
         mLastIndex = 0;
         path searchPath = mRequest.SearchPath;
@@ -86,7 +87,7 @@ namespace ACore
                     rItem.Name = x.path().filename().string();
                     rItem.Type = isDir ? ItemType::DIRECTORY : ItemType::FILE;
                     mResults.push_back(rItem);
-                    std::cout << "Found: " << rItem.FullPath << std::endl;
+                    std::cout << "Found: " << rItem.FullPath << '\n';
                 }
                 if(isDir)
                 {
