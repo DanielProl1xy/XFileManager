@@ -1,3 +1,5 @@
+// (c) 2023 Daniel Asadullaev. All Rights Reserved.
+
 #include "Components/CExplorer.h"
 
 CExplorerItem::CExplorerItem(ACore::SExplorerItem meta)

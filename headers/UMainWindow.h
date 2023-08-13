@@ -1,3 +1,5 @@
+// (c) 2023 Daniel Asadullaev. All Rights Reserved.
+
 #pragma once
 
 #include <QMainWindow>

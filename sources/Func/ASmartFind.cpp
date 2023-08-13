@@ -1,3 +1,5 @@
+// (c) 2023 Daniel Asadullaev. All Rights Reserved.
+
 #include "Func/ASmartFind.h"
 #include "ASmartFind.h"
 #include <iostream>
