@@ -2,7 +2,7 @@
 
 #include "Components/CExplorer.h"
 
-CExplorerItem::CExplorerItem(ACore::SExplorerItem meta)
+CExplorerItem::CExplorerItem(APICore::SExplorerItem meta)
     : QListWidgetItem(meta.Name.c_str())
     , itemMeta(meta)
 {

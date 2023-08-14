@@ -4,17 +4,8 @@
 
 namespace UI
 {
-    UMainWindow *UMainWindow::instance = nullptr;
 
-    UMainWindow *UMainWindow::GetInstance()
-    {
-        if(instance == nullptr)
-            instance = new UMainWindow;
-
-        return instance;
-    }
-
-    UMainWindow::UMainWindow(QWidget* parent)
+    UMainWindow::UMainWindow(const char *startPath, QWidget* parent)
         : QMainWindow(parent)
     {
         setWindowTitle(TITLE);
@@ -22,7 +13,10 @@ namespace UI
         initActions();
         qDebug("window created");
 
-        filesExplorer->ExploreFolder();
+        if(filesExplorer->ExploreFolder(startPath) == false)
+        {
+            filesExplorer->ExploreFolder(ROOT_PATH);
+        }
     }
 
     UMainWindow::~UMainWindow()
@@ -89,11 +83,9 @@ namespace UI
 
     void UMainWindow::on_FindLineAccepted()
     {
-        finder = new ACore::ASmartFind();
-        ACore::SFindRequest request;
+        APICore::SFindRequest request;
         request.RecursionLimit = 10;
         request.Request = fastFindLine->text().toStdString();
         request.SearchPath = filesExplorer->GetCurrentPath();
-        finder->SearchFor(request);
     }
 }

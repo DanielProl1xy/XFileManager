@@ -3,7 +3,8 @@
 #pragma once
 
 #include "Components.h"
-#include "Func/AFileExplore.h"
+#include "Func/AFileExplorer.h"
+#include "Func/ASmartSearch.h"
 #include <QListWidget>
 #include <QListWidgetItem>
 #include "Core.h"
@@ -12,12 +13,12 @@ class CExplorerItem : public QListWidgetItem
 {
 
 private:
-    ACore::SExplorerItem itemMeta;
+    APICore::SExplorerItem itemMeta;
 public:
-    CExplorerItem(ACore::SExplorerItem meta);
+    CExplorerItem(APICore::SExplorerItem meta);
     ~CExplorerItem();
 
-    ACore::SExplorerItem GetMeta() const { return itemMeta; }
+    APICore::SExplorerItem GetMeta() const { return itemMeta; }
 };
 
 class UI::CExplorer : public QListWidget
@@ -26,27 +27,42 @@ class UI::CExplorer : public QListWidget
     Q_OBJECT
 
 private:
-    ACore::AFileExplore m_explorer;
+    APICore::AFileExplorer m_explorer;
+    APICore::ASmartSearch m_searcher;
+    std::string m_currentPath;
 
 public:
     CExplorer(QWidget *parent = nullptr);
     ~CExplorer();
 
 public:
-    std::string GetCurrentPath() const { return m_explorer.GetCurrentPath(); }
-    void ExploreFolder(const std::string folderPath = ROOT_PATH);
-    void AddExplorerItem(ACore::SExplorerItem sItem);
+
+    // Returns current path of explorer.
+    std::string GetCurrentPath() const { return m_currentPath; }
+
+    // Starts exploring given folderPath.
+    // Adds all elements inside given folder on widget.
+    // Returns true if success
+    // Returns false if failed
+    bool ExploreFolder(const std::string folderPath);
+
+private:
+
+    // Creates CExplorerItem based on given SExplorerItem meta.
+    // And adds it to this widget.
+    void addExplorerItem(APICore::SExplorerItem sItem);
+
+signals:
+
+    // Emmitted when the current path is changed successfully.
+    void UpdateExplorerPath(const char *newPath);
 
 public slots:
     void on_UserTypedPath(const std::string newPath);
-
-signals:
-    void UpdateExplorerPath(const char *newPath);
 
 private slots:
     void on_ItemDoubleClick(QListWidgetItem *item);
 
 private:
-    ACore::ExploreResult exploreFolder(const std::string folderPath);
     void initActions();
 };

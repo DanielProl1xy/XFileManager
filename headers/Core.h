@@ -7,22 +7,36 @@
 
 #define TITLE "File manager"
 
-QT_BEGIN_NAMESPACE
+#ifdef _WIN32
+#define ROOT_PATH "C:\\"
+#else
+#define ROOT_PATH "/"
+#endif
+
+// Declares all UI Elements
 namespace UI
 {
     class UMainWindow;
+
+    // TODO
     class USmartFindWindow;
+
+    // TODO
     class UFileManagmentWindow;
+
+    // TODO
     class UScriptingWindow;
 }
-QT_END_NAMESPACE
 
-QT_BEGIN_NAMESPACE
-namespace ACore
+namespace APICore
 {
-    class AFileExplore;
+    class AFileExplorer;
+    
     class AFileManage;
-    class ASmartFind;
+
+    class ASmartSearch;
+
+    // TODO
     class AScrpiting;
 
     enum class ItemType
@@ -71,5 +85,4 @@ namespace ACore
         SExplorerItem Item;
     };
 }
-QT_END_NAMESPACE
 

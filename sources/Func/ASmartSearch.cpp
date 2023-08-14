@@ -1,16 +1,14 @@
 // (c) 2023 Daniel Asadullaev. All Rights Reserved.
 
-#include "Func/ASmartFind.h"
-#include "ASmartFind.h"
+#include "Func/ASmartSearch.h"
 #include <iostream>
 
-namespace ACore
+namespace APICore
 {
-    FindResult ASmartFind::SearchFor(SFindRequest request)
+    FindResult ASmartSearch::SearchFor(SFindRequest request)
     {
         if(!finished && request == mRequest)
             return FindResult::REQUEST_ACCEPTED;
-
 
         mRequest = request;
         mLastIndex = 0;
@@ -25,7 +23,7 @@ namespace ACore
         return FindResult::REQUEST_INVALID;
     }
 
-    FindResult ASmartFind::SearchGetNext(SExplorerItem *item)
+    FindResult ASmartSearch::SearchGetNext(SExplorerItem *item)
     {
         if(mLastIndex < mResults.size())
         {
@@ -43,12 +41,12 @@ namespace ACore
         }
     }
 
-    void ASmartFind::SearchStop()
+    void ASmartSearch::SearchStop()
     {
         finished = true;
     }
 
-    void ASmartFind::execSearchThread()
+    void ASmartSearch::execSearchThread()
     {
         path rootPath = mRequest.SearchPath;
         std::vector<path> cachedFolders = std::vector<path>();
@@ -58,7 +56,8 @@ namespace ACore
         while(!finished)
         {
             for(path nextPath : cachedFolders)
-            {                   
+            {           
+                // TODO: multithreading during searching        
                 searchIn(nextPath, i, &tempCachedFolders);
             }
             i += 1;
@@ -72,9 +71,9 @@ namespace ACore
         std::cout << "Searching end" << std::endl;
     }
 
-    void ASmartFind::searchIn(path folder, int recurs, std::vector<path>* folders)
+    void ASmartSearch::searchIn(path folder, int recurs, std::vector<path>* folders)
     {
-        if(recurs == mRequest.RecursionLimit)
+        if(recurs == mRequest.RecursionLimit || finished)
             return;
         recurs += 1;
         try

@@ -8,7 +8,7 @@ namespace UI
     CExplorer::CExplorer(QWidget *parent)
         : QListWidget(parent)
     {
-        m_explorer = ACore::AFileExplore();
+        m_explorer = APICore::AFileExplorer();
         initActions();
     }
 
@@ -17,17 +17,28 @@ namespace UI
         
     }
 
-    void CExplorer::ExploreFolder(const std::string folderPath)
+    bool CExplorer::ExploreFolder(const std::string folderPath)
     {
+        std::vector<APICore::SExplorerItem> items;
 
-        if(exploreFolder(folderPath) == ACore::ExploreResult::SUCCESS)
+        if(m_explorer.ExploreFolder(folderPath, &items) == APICore::ExploreResult::SUCCESS)
         {
+            clear();
+            m_currentPath = folderPath;
+            for(APICore::SExplorerItem item : items)
+            {
+                // TODO: multithreading
+                addExplorerItem(item);
+            }
             emit UpdateExplorerPath(folderPath.c_str());
-        }  
-         
+
+            return true;
+        }
+
+        return false;
     }
 
-    void CExplorer::AddExplorerItem(ACore::SExplorerItem sItem)
+    void CExplorer::addExplorerItem(APICore::SExplorerItem sItem)
     {
         CExplorerItem *item = new CExplorerItem(sItem);
         addItem(item);
@@ -43,43 +54,14 @@ namespace UI
         CExplorerItem *explorerItem = static_cast<CExplorerItem*>(item);
         if(!explorerItem)
             return;
-        if(explorerItem->GetMeta().Type == ACore::ItemType::DIRECTORY)
+        if(explorerItem->GetMeta().Type == APICore::ItemType::DIRECTORY)
         {
-            std::string path = m_explorer.GetCurrentPath();
-            if(path[path.length() - 1] != '\\')
-            {
-                path += '\\';
-            }
-            path += explorerItem->GetMeta().Name;
-            ExploreFolder(path);
+            ExploreFolder(explorerItem->GetMeta().FullPath);
         }
     }
 
     void CExplorer::on_UserTypedPath(const std::string newPath)
     {
         ExploreFolder(newPath);
-    }
-
-    ACore::ExploreResult CExplorer::exploreFolder(const std::string folderPath)
-    {
-        std::vector<ACore::SExplorerItem> items;
-
-        try
-        {
-            items = m_explorer.ExploreFolder(folderPath); 
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-            return ACore::ExploreResult::FAILED;
-        }
-
-        clear();
-
-        for(ACore::SExplorerItem x : items)
-        {
-            AddExplorerItem(x);
-        }
-        return ACore::ExploreResult::SUCCESS;    
     }
 }

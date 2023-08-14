@@ -2,11 +2,11 @@
 
 #include <Qt>
 
-QT_BEGIN_NAMESPACE
 namespace UI
 {
     class CExplorer;
     class COverview;
+
+    // TODO
     class CMainMenuBar;
 }
-QT_END_NAMESPACE
