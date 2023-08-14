@@ -1,5 +1,6 @@
 # XFileManager
-File explorer and manager with QT and Boost frameworks.
+It supposed to be a file explorer and manager(!) to manage your files with scripting. For example: to build projects or categorize your files to separated folders by filters.   
+ 
 
 # Requires:
 Boost 1.80.0
