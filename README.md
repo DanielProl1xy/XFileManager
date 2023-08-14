@@ -1,5 +1,5 @@
 # XFileManager
-It supposed to be a file explorer and manager(!) to manage your files with scripting. For example: to build projects or categorize your files to separated folders by filters.   
+It supposed to be a file explorer and manager(!) to manage your files with scripting. For example: to collect projects files or categorize your files to separated folders by filters.   
  
 
 # Requires:
