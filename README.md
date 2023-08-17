@@ -3,7 +3,7 @@ It supposed to be a file explorer and manager(!) to manage your files with scrip
  
 # Features
 
-You can explore your disks by typing path in followed line with text, or by clicking on folders in explorer. You can serach your files/folders by typing name in text line which is by right hand of path text line.
+You can explore your disks by typing path in followed line with text, or by clicking on folders in explorer. You can search your files/folders by typing name in text line which is by right hand of path text line.
 
 
 # Requires:
