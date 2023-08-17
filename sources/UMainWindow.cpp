@@ -13,10 +13,7 @@ namespace UI
         initActions();
         qDebug("window created");
 
-        if(filesExplorer->ExploreFolder(startPath) == false)
-        {
-            filesExplorer->ExploreFolder(ROOT_PATH);
-        }
+        filesExplorer->ExploreFolder(startPath);
     }
 
     UMainWindow::~UMainWindow()
@@ -37,12 +34,12 @@ namespace UI
         filesOverview->setMinimumWidth(180);
         filesOverview->setMaximumWidth(220);
 
-        pathLine = new QLineEdit();
+        pathLine = new CInputLine();
         pathLine->setText("C:\\Users\\danil");
         pathLine->setMinimumHeight(30);
         pathLine->setMinimumWidth(600);
         
-        fastFindLine = new QLineEdit();
+        fastFindLine = new CInputLine();
         fastFindLine->setText("example: \"myfile.txt\"");
         fastFindLine->setMinimumHeight(30);
         fastFindLine->setMinimumWidth(150);
@@ -51,7 +48,7 @@ namespace UI
         filesExplorer->setMinimumHeight(400);
         filesExplorer->setMinimumWidth(750);
 
-        consoleLine = new QLineEdit();
+        consoleLine = new CInputLine();
         consoleLine->setMinimumHeight(30);
         consoleLine->setMinimumWidth(750);
 
@@ -71,8 +68,8 @@ namespace UI
     void UMainWindow::initActions()
     {
         connect(filesExplorer, &CExplorer::UpdateExplorerPath, pathLine, &QLineEdit::setText);
-        connect(pathLine, &QLineEdit::editingFinished, this, &UMainWindow::on_PathLineAccepted);
-        connect(fastFindLine, &QLineEdit::editingFinished, this, &UMainWindow::on_FindLineAccepted);
+        connect(pathLine, &CInputLine::UserTypedInput, this, &UMainWindow::on_PathLineAccepted);
+        connect(fastFindLine, &CInputLine::UserTypedInput, this, &UMainWindow::on_FindLineAccepted);
         connect(this, &UMainWindow::UserTypedPath, filesExplorer, &CExplorer::on_UserTypedPath);
     }
     
@@ -87,5 +84,6 @@ namespace UI
         request.RecursionLimit = 10;
         request.Request = fastFindLine->text().toStdString();
         request.SearchPath = filesExplorer->GetCurrentPath();
+        filesExplorer->StartSearch(request);
     }
 }

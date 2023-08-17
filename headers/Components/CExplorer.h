@@ -8,6 +8,10 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include "Core.h"
+#include "Components/CExplorer/ExploreThread.h"
+#include "Components/CExplorer/SearchThread.h"
+
+using namespace UI::Threads;
 
 class CExplorerItem : public QListWidgetItem
 {
@@ -30,6 +34,8 @@ private:
     APICore::AFileExplorer m_explorer;
     APICore::ASmartSearch m_searcher;
     std::string m_currentPath;
+    ExploreThread *m_eThread;
+    SearchThread *m_sThread;
 
 public:
     CExplorer(QWidget *parent = nullptr);
@@ -44,9 +50,11 @@ public:
     // Adds all elements inside given folder on widget.
     // Returns true if success
     // Returns false if failed
-    bool ExploreFolder(const std::string folderPath);
+    void ExploreFolder(const std::string folderPath);
 
-private:
+    void StartSearch(APICore::SFindRequest request);
+
+private slots:
 
     // Creates CExplorerItem based on given SExplorerItem meta.
     // And adds it to this widget.
@@ -59,6 +67,12 @@ signals:
 
 public slots:
     void on_UserTypedPath(const std::string newPath);
+    void on_StopSearching();
+
+private slots:
+    void on_ExploreCompleted(bool result);
+    void on_ClearWidget() { clear(); }
+    void on_SearchCompleted(bool result);
 
 private slots:
     void on_ItemDoubleClick(QListWidgetItem *item);

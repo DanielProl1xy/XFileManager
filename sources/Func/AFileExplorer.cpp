@@ -12,14 +12,22 @@ namespace APICore
 
         if(exists(explorePath) && is_directory(explorePath))
         {
-            for(directory_entry& x : directory_iterator(explorePath))
+            try
             {
-                SExplorerItem itm;
-                itm.Name = x.path().filename().string();
-                itm.Type = is_directory(x.path()) ? ItemType::DIRECTORY : ItemType::FILE;
-                itm.FullPath = x.path().string();
-                result->push_back(itm);
+                for(directory_entry& x : directory_iterator(explorePath))
+                {
+                    SExplorerItem itm;
+                    itm.Name = x.path().filename().string();
+                    itm.Type = is_directory(x.path()) ? ItemType::DIRECTORY : ItemType::FILE;
+                    itm.FullPath = x.path().string();
+                    result->push_back(itm);
+                }
             }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+                return ExploreResult::FAILED;
+            }                       
         }
         else
         {

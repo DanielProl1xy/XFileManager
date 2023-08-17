@@ -6,6 +6,7 @@ namespace UI
 {
     class CExplorer;
     class COverview;
+    class CInputLine;
 
     // TODO
     class CMainMenuBar;

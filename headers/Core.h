@@ -26,6 +26,14 @@ namespace UI
 
     // TODO
     class UScriptingWindow;
+
+    namespace Threads
+    {
+        class ExploreThread;
+
+        // TODO
+        class SearchThread;
+    }
 }
 
 namespace APICore

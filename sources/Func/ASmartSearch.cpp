@@ -16,8 +16,8 @@ namespace APICore
         
         if(exists(searchPath) && is_directory(searchPath))
         {
-            mSearchThread = boost::thread([&] () { execSearchThread(); });
             mResults = std::vector<SExplorerItem>();
+            mSearchThread = boost::thread([&] () { execSearchThread(); });
             return FindResult::REQUEST_ACCEPTED;
         }
         return FindResult::REQUEST_INVALID;
@@ -27,7 +27,7 @@ namespace APICore
     {
         if(mLastIndex < mResults.size())
         {
-            item = &(mResults[mLastIndex]);
+            *item = mResults[mLastIndex];
             mLastIndex += 1;
             return FindResult::FOUND;
         }
@@ -48,6 +48,7 @@ namespace APICore
 
     void ASmartSearch::execSearchThread()
     {
+        std::cout << "exec search\n";
         path rootPath = mRequest.SearchPath;
         std::vector<path> cachedFolders = std::vector<path>();
         std::vector<path> tempCachedFolders = std::vector<path>();
@@ -68,7 +69,6 @@ namespace APICore
             cachedFolders = tempCachedFolders;
             tempCachedFolders.clear();
         }
-        std::cout << "Searching end" << std::endl;
     }
 
     void ASmartSearch::searchIn(path folder, int recurs, std::vector<path>* folders)
@@ -88,7 +88,6 @@ namespace APICore
                     rItem.Name = x.path().filename().string();
                     rItem.Type = isDir ? ItemType::DIRECTORY : ItemType::FILE;
                     mResults.push_back(rItem);
-                    std::cout << "Found: " << rItem.FullPath << '\n';
                 }
                 if(isDir)
                 {

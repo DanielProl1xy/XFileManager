@@ -20,6 +20,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/headers
     ${PROJECT_SOURCE_DIR}/sources/Components
     ${PROJECT_SOURCE_DIR}/headers/Components
+    ${PROJECT_SOURCE_DIR}/sources/Components/CExplorer
+    ${PROJECT_SOURCE_DIR}/headers/Components/CExplorer
     ${PROJECT_SOURCE_DIR}/headers/Func
     ${PROJECT_SOURCE_DIR}/sources/Func
     ${Boost_INCLUDE_DIRS}
@@ -29,7 +31,9 @@ file(GLOB all_SRCS
     "${PROJECT_SOURCE_DIR}/headers/*.h"
     "${PROJECT_SOURCE_DIR}/sources/*.cpp"
     "${PROJECT_SOURCE_DIR}/headers/Components/*.h"
-    "${PROJECT_SOURCE_DIR}/sources/Components/*.cpp"
+    "${PROJECT_SOURCE_DIR}/sources/Components/*.cpp"    
+    "${PROJECT_SOURCE_DIR}/sources/Components/CExplorer/*.cpp"
+    "${PROJECT_SOURCE_DIR}/headers/Components/CExplorer/*.h"
     "${PROJECT_SOURCE_DIR}/headers/Func/*.h"
     "${PROJECT_SOURCE_DIR}/sources/Func/*.cpp"
 )

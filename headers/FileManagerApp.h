@@ -4,6 +4,7 @@
 
 #include <QApplication>
 #include <QVector>
+#include <QStringList>
 #include <UMainWindow.h>
 
 namespace Application
