@@ -13,7 +13,7 @@ class UI::Threads::ExploreThread : public QThread
 public:
     ExploreThread(QObject *parent = nullptr);
     
-    void SetExplorer(APICore::AFileExplorer *explorer, const std::string path);
+    void SetPath(const std::string path);
 
 signals:
     void ItemFound(APICore::SExplorerItem item);
@@ -24,6 +24,5 @@ protected:
     void run() override;
 
 private:
-    APICore::AFileExplorer *m_explorer;
     std::string m_folderPath;
 };

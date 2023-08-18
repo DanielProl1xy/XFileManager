@@ -7,9 +7,11 @@
 #include "Func/ASmartSearch.h"
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QContextMenuEvent>
 #include "Core.h"
 #include "Components/CExplorer/ExploreThread.h"
 #include "Components/CExplorer/SearchThread.h"
+#include "Components/CExplorer/CContextMenu.h"
 
 using namespace UI::Threads;
 
@@ -30,12 +32,6 @@ class UI::CExplorer : public QListWidget
     
     Q_OBJECT
 
-private:
-    APICore::AFileExplorer m_explorer;
-    APICore::ASmartSearch m_searcher;
-    std::string m_currentPath;
-    ExploreThread *m_eThread;
-    SearchThread *m_sThread;
 
 public:
     CExplorer(QWidget *parent = nullptr);
@@ -47,12 +43,21 @@ public:
     std::string GetCurrentPath() const { return m_currentPath; }
 
     // Starts exploring given folderPath.
-    // Adds all elements inside given folder on widget.
-    // Returns true if success
-    // Returns false if failed
+    // Adds all elements from given folder on widget.
     void ExploreFolder(const std::string folderPath);
 
     void StartSearch(APICore::SFindRequest request);
+
+signals:
+
+    // Emmitted when the current path is changed successfully.
+    void UpdateExplorerPath(const char *newPath);
+
+protected:
+
+    #ifndef QT_NO_CONTEXTMENU
+    void contextMenuEvent(QContextMenuEvent *event);
+    #endif
 
 private slots:
 
@@ -60,21 +65,30 @@ private slots:
     // And adds it to this widget.
     void addExplorerItem(APICore::SExplorerItem sItem);
 
-signals:
+private:
+    APICore::ASmartSearch m_searcher;
+    std::string m_currentPath;
+    std::string m_tempPath;
+    ExploreThread *m_eThread;
+    SearchThread *m_sThread;
+    CContextMenu *m_contextMenu;
 
-    // Emmitted when the current path is changed successfully.
-    void UpdateExplorerPath(const char *newPath);
 
 public slots:
     void on_UserTypedPath(const std::string newPath);
     void on_StopSearching();
 
 private slots:
-    void on_ExploreCompleted(bool result);
+    void on_openAction();
+    void on_createAction();
+    void on_copyAction();
+    void on_pasteAction();
+    void on_deleteAction();
+    void on_renameAction();
+
+    void on_ExploreCompleted(int result);
     void on_ClearWidget() { clear(); }
     void on_SearchCompleted(bool result);
-
-private slots:
     void on_ItemDoubleClick(QListWidgetItem *item);
 
 private:

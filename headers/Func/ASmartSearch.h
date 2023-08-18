@@ -6,6 +6,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/chrono.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/system/detail/error_code.hpp>
 #include <boost/thread.hpp>
 
 #define THREADS_COUNT 4

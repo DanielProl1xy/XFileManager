@@ -33,6 +33,7 @@ namespace APICore
         }
         if(finished)
         {
+            mResults.clear();
             return FindResult::FINISHED;
         }
         else
@@ -49,43 +50,60 @@ namespace APICore
     void ASmartSearch::execSearchThread()
     {
         std::cout << "exec search\n";
+
         path rootPath = mRequest.SearchPath;
         std::vector<path> cachedFolders = std::vector<path>();
-        std::vector<path> tempCachedFolders = std::vector<path>();
-        searchIn(rootPath, 0, &cachedFolders);        
-        int i = 1;
+        std::vector<path> tempCachedFolders = std::vector<path>();    
+
+
+        finished = false;
+
+        searchIn(rootPath, 0, &cachedFolders);   
+          
+        int recurs = 1;
+
+
+        path nextPath;
         while(!finished)
         {
-            for(path nextPath : cachedFolders)
+            while(cachedFolders.size() > 0)
             {           
-                // TODO: multithreading during searching        
-                searchIn(nextPath, i, &tempCachedFolders);
+                // TODO: multithreading during searching
+                nextPath = cachedFolders.back();
+                cachedFolders.pop_back();        
+                searchIn(nextPath, recurs, &tempCachedFolders);
             }
-            i += 1;
+            
+
             if(tempCachedFolders.empty())
             {
                 SearchStop();
             }
+            recurs += 1;
             cachedFolders = tempCachedFolders;
             tempCachedFolders.clear();
         }
+        
+        finished = true;
     }
 
     void ASmartSearch::searchIn(path folder, int recurs, std::vector<path>* folders)
     {
-        if(recurs == mRequest.RecursionLimit || finished)
+        if(recurs > mRequest.RecursionLimit || finished)
             return;
-        recurs += 1;
         try
         {
+            bool isDir;
+            if(is_empty(folder))
+                return;
             for(directory_entry x : directory_iterator(folder))
             {
-                bool isDir = is_directory(x);
+                isDir = is_directory(x);
                 if(contains(x.path().filename().string(), mRequest.Request))
                 {
                     SExplorerItem rItem;
                     rItem.FullPath = x.path().string();
-                    rItem.Name = x.path().filename().string();
+                    rItem.Name = rItem.FullPath;
                     rItem.Type = isDir ? ItemType::DIRECTORY : ItemType::FILE;
                     mResults.push_back(rItem);
                 }
@@ -95,9 +113,9 @@ namespace APICore
                 }
             }
         }
-        catch(const std::exception& e)
+        catch(const filesystem_error e)
         {
-
+            std::cout << e.what() << std::endl;
         }          
     }
 }

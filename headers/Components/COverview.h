@@ -33,7 +33,7 @@ public:
     ~COverview();
 private:
     QStandardItemModel model;
-    APICore::AFileExplorer m_explorer;
+    
 private:
     void initActions();
     void exploreByItem(COverviewItem *item);

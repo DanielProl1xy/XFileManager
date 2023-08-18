@@ -10,28 +10,27 @@ namespace UI::Threads
 
     }
 
-    void ExploreThread::SetExplorer(APICore::AFileExplorer *explorer, const std::string path)
+    void ExploreThread::SetPath(const std::string path)
     {
         m_folderPath = path;
-        m_explorer = explorer;
     }
 
     void ExploreThread::run()
     {   
-        assert(m_explorer);
-
+        
         std::vector<APICore::SExplorerItem> items;
 
-        if(m_explorer->ExploreFolder(m_folderPath, &items) == APICore::ExploreResult::SUCCESS)
+        int err = APICore::ExploreFolder(m_folderPath, &items);
+        if(err == 0)
         {
             emit ClearWidget();
             for(APICore::SExplorerItem item : items)
             {
                 emit ItemFound(item);
             }
-            emit ExploreCompleted(true);
+            emit ExploreCompleted(0);
             return;
         }
-        emit ExploreCompleted(false);
+        emit ExploreCompleted(err);
     }
 }

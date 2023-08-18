@@ -11,7 +11,6 @@ namespace UI
     {
         setModel(&model);
         initActions();
-        m_explorer = APICore::AFileExplorer();
 
         horizontalScrollBar()->setEnabled(true);
         setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -50,23 +49,16 @@ namespace UI
     void COverview::exploreByItem(COverviewItem *item)
     {
         std::vector<APICore::SExplorerItem> items;
-        try
+        if(APICore::ExploreFolder(item->GetMeta().FullPath, &items) == 0)
         {
-            if(m_explorer.ExploreFolder(item->GetMeta().FullPath, &items) == APICore::ExploreResult::SUCCESS)
+            item->removeRow(0);
+            for(APICore::SExplorerItem exploredItem : items)
             {
-                item->removeRow(0);
-                for(APICore::SExplorerItem exploredItem : items)
-                {
-                    // TODO: multithreading  
-                    item->appendRow(new COverviewItem(exploredItem));
-                    item->isExplored = true;
-                }
+                // TODO: multithreading  
+                item->appendRow(new COverviewItem(exploredItem));
+                item->isExplored = true;
             }
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-        }       
+        }   
     }
 }
 

@@ -8,15 +8,19 @@
 #define TITLE "File manager"
 
 #ifdef _WIN32
-#define ROOT_PATH "C:\\"
+#define ROOT_PATH "."
 #else
 #define ROOT_PATH "/"
 #endif
+
+#define NOT_IMPLEMENTED(x) assert(0 && x)
 
 // Declares all UI Elements
 namespace UI
 {
     class UMainWindow;
+
+    class UCreateItemDialog;
 
     // TODO
     class USmartFindWindow;
@@ -38,7 +42,6 @@ namespace UI
 
 namespace APICore
 {
-    class AFileExplorer;
     
     class AFileManage;
 
@@ -80,6 +83,7 @@ namespace APICore
         std::string Request;
         std::string SearchPath;        
         size_t RecursionLimit;
+        bool RegisterSensetive = false;       
 
         bool operator==(SFindRequest& other)
         {

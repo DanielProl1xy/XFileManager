@@ -17,13 +17,23 @@ namespace UI
 
     void CMainMenuBar::initActions()
     {
-        createFile = new QAction("&File");
-        createFolder = new QAction("&Folder");
+       
 
-        createMenu = new QMenu("&Create");
-        createMenu->addAction(createFile);
-        createMenu->addAction(createFolder);
+        explorerMenu = new QMenu("&Explorer");
 
-        addMenu(createMenu);
+        createAction = new QAction("&Create");
+
+        explorerMenu->addAction(createAction);
+
+        searchMenu = new QMenu("&Search");
+
+        openSearchSettings = new QAction("&Settings");
+        stopSearch = new QAction("&Stop searching");
+
+        searchMenu->addAction(openSearchSettings);
+        searchMenu->addAction(stopSearch);
+
+        addMenu(explorerMenu);
+        addMenu(searchMenu);
     }
 }
