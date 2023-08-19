@@ -10,6 +10,7 @@
 
 namespace APICore
 {
+
     // Returns in *result list of elements inside  the folder specified by the given path.
     // Returns not zero if the path is incorrect or if there is an error.
     int ExploreFolder(const std::string path, std::vector<SExplorerItem> *result);

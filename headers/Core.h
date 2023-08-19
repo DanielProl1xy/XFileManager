@@ -8,7 +8,7 @@
 #define TITLE "File manager"
 
 #ifdef _WIN32
-#define ROOT_PATH "."
+#define ROOT_PATH "C:\\"
 #else
 #define ROOT_PATH "/"
 #endif

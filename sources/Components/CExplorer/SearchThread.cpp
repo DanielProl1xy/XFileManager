@@ -21,13 +21,17 @@ namespace UI::Threads
     {
         if(m_searcher->SearchFor(m_request) == APICore::FindResult::REQUEST_ACCEPTED)
         {
+            qDebug("Accepted");
             emit ClearWidget();
             APICore::SExplorerItem item;
             APICore::FindResult res = m_searcher->SearchGetNext(&item);
             while(res != APICore::FindResult::FINISHED)
             {
-                if(res == APICore::FindResult::FOUND)                
+                if(res == APICore::FindResult::FOUND)
+                {                    
+                    qDebug(item.FullPath.c_str());                    
                     emit ItemFound(item);
+                }                
                 res = m_searcher->SearchGetNext(&item);
             }
             emit SearchCompleted(true);

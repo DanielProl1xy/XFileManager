@@ -38,26 +38,40 @@ namespace APICore
 
     int CreateFolder(const std::string path)
     {
-        NOT_IMPLEMENTED("CreateFolder");
+        error_code err;
+        create_directory(path, err);
+        return err.value();
     }
     
     int CopyFile(const std::string from, const std::string to)
     {
         NOT_IMPLEMENTED("CopyFile");
+        
+        error_code err;
+        return err.value();
     }
 
     int CopyFolder(const std::string from, const std::string to)
     {
         NOT_IMPLEMENTED("CopyFolder");
+
+        error_code err;
+        return err.value();
     }
 
     int Delete(const std::string path)
     {
         NOT_IMPLEMENTED("Delete");
+
+        error_code err;
+        return err.value();
     }
 
     int Rename(const std::string path, const std::string newName)
     {
         NOT_IMPLEMENTED("Rename");
+
+        error_code err;
+        return err.value();
     }
 }

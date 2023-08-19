@@ -23,8 +23,12 @@ namespace UI
     }
 
     void CExplorer::ExploreFolder(const std::string folderPath)
-    {        
-        m_eThread->terminate();
+    {    
+        if(m_eThread->isRunning())
+        {
+            m_eThread->wait();
+        }    
+
         if(m_sThread->isRunning())
         {
             m_searcher.SearchStop();
@@ -37,7 +41,12 @@ namespace UI
     }
 
     void CExplorer::StartSearch(APICore::SFindRequest request)
-    {       
+    {    
+        if(m_eThread->isRunning())
+        {
+            m_eThread->wait();
+        } 
+
         if(m_sThread->isRunning())
         {
             m_searcher.SearchStop();
@@ -115,6 +124,7 @@ namespace UI
         if(m_sThread->isRunning())
         {
             m_searcher.SearchStop();
+            m_sThread->wait();
         }
     }
 
@@ -151,6 +161,6 @@ namespace UI
 
     void CExplorer::on_SearchCompleted(bool result)
     {
-        qDebug("end");
+        qDebug("search completed");
     }
 }

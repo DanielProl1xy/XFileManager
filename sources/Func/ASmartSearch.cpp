@@ -10,6 +10,9 @@ namespace APICore
         if(!finished && request == mRequest)
             return FindResult::REQUEST_ACCEPTED;
 
+        if(!finished)
+            SearchStop();
+
         mRequest = request;
         mLastIndex = 0;
         path searchPath = mRequest.SearchPath;
@@ -34,6 +37,7 @@ namespace APICore
         if(finished)
         {
             mResults.clear();
+            SearchStop();
             return FindResult::FINISHED;
         }
         else
@@ -45,16 +49,14 @@ namespace APICore
     void ASmartSearch::SearchStop()
     {
         finished = true;
+        mSearchThread.join();
     }
 
     void ASmartSearch::execSearchThread()
     {
-        std::cout << "exec search\n";
-
         path rootPath = mRequest.SearchPath;
         std::vector<path> cachedFolders = std::vector<path>();
-        std::vector<path> tempCachedFolders = std::vector<path>();    
-
+        std::vector<path> tempCachedFolders = std::vector<path>();
 
         finished = false;
 
@@ -77,20 +79,21 @@ namespace APICore
 
             if(tempCachedFolders.empty())
             {
-                SearchStop();
+                break;
             }
             recurs += 1;
             cachedFolders = tempCachedFolders;
             tempCachedFolders.clear();
         }
-        
         finished = true;
     }
 
     void ASmartSearch::searchIn(path folder, int recurs, std::vector<path>* folders)
     {
         if(recurs > mRequest.RecursionLimit || finished)
+        {
             return;
+        }
         try
         {
             bool isDir;
@@ -115,7 +118,7 @@ namespace APICore
         }
         catch(const filesystem_error e)
         {
-            std::cout << e.what() << std::endl;
+            
         }          
     }
 }
